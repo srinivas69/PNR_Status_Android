@@ -1,6 +1,5 @@
 package com.seenu.pnrstatus;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,15 +11,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 import com.seenu.pnrstatus.files.VolleyFunctions;
+import com.seenu.pnrstatus.object.PNRStatusObject;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,6 +44,8 @@ public class MainActivity extends ActionBarActivity {
 	private JsonObjectRequest jsonObjReq;
 
 	private VolleyFunctions volFun;
+
+	private PNRStatusObject obj;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,9 @@ public class MainActivity extends ActionBarActivity {
 
 						String result = response.toString();
 
+						Gson gson = new Gson();
+						obj = gson.fromJson(result, PNRStatusObject.class);
+
 					}
 				}, new Response.ErrorListener() {
 
@@ -104,6 +108,10 @@ public class MainActivity extends ActionBarActivity {
 						if (response != null) {
 
 						} else {
+
+							Toast.makeText(MainActivity.this,
+									"Bad Internet Connection",
+									Toast.LENGTH_SHORT).show();
 
 						}
 					}
